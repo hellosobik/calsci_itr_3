@@ -12,16 +12,18 @@ class Tbf:
         buf=self.t_b.buffer()
         # print(buf)
         for i in range(len(buf)):
-            self.disp_out.set_page_address(i)
-            self.disp_out.set_column_address(0)
-            for j in buf[i]:
-                chtr=j
-                # print(buf[i])
-                # print(chtr)
-                # print(str(chtr))
-                chtr_byte_data=self.chrs.Chr2bytes(chtr)
-                for k in chtr_byte_data:
-                    self.disp_out.write_data(k)
-                self.disp_out.write_data(0b00000000)
-            for k in range(8):
-                self.disp_out.write_data(0b00000000)
+            if buf[i] != "\t"*20:
+                self.disp_out.set_page_address(i)
+                self.disp_out.set_column_address(0)
+
+                for j in buf[i]:
+                    chtr=j
+                    # print(buf[i])
+                    # print(chtr)
+                    # print(str(chtr))
+                    chtr_byte_data=self.chrs.Chr2bytes(chtr)
+                    for k in chtr_byte_data:
+                        self.disp_out.write_data(k)
+                    self.disp_out.write_data(0b00000000)
+                for k in range(8):
+                    self.disp_out.write_data(0b00000000)
