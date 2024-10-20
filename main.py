@@ -15,6 +15,7 @@ display=Display(cs1=2, rs=32, rst=33, sda=27, sck=26)
 txt=Textbuffer()
 txt.buffer()
 tbf=Tbf(disp_out=display, chrs=chtrs, t_b=txt)
+tbf.refresh()
 typer=Typer(keypad=keyin, keypad_map=keymap)
 while True:
     x=typer.start_typing()

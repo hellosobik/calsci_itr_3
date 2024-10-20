@@ -23,7 +23,7 @@ class Textbuffer:
         # Append all necessary spaces at once to avoid repeated string concatenation
         if remaining_spaces > 0:
             self.text_buffer += " " * remaining_spaces
-            self.text_buffer_with_spaces+=remaining_spaces
+            # self.text_buffer_with_spaces+=remaining_spaces
         # Calculate the menu_buffer only once
         self.menu_buffer_size = len(self.text_buffer)
         self.menu_buffer = list(range(self.menu_buffer_size))
@@ -49,6 +49,7 @@ class Textbuffer:
         return new_rows_list
 
     def update_buffer(self, text):
+        print(self.text_buffer_with_spaces, "#", self.menu_buffer_cursor, self.text_buffer, self.menu_buffer, self.display_buffer, "\n")
         if text=="nav_d" or text =="nav_r":
             if text=="nav_d":
                 self.menu_buffer_cursor+=self.cols
