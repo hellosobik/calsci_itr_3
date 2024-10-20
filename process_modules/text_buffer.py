@@ -10,8 +10,10 @@ class Textbuffer:
         self.display_buffer=self.menu_buffer[self.display_buffer_position:self.display_buffer_position+self.rows*self.cols]
         self.no_last_spaces=0
         self.buffer_length=len(self.text_buffer)
+        self.text_buffer_with_spaces=len(self.text_buffer)
+
     
-    def buffer(self):            
+    def buffer(self):
         
         # Calculate the number of spaces needed to make the buffer length a multiple of cols
         self.buffer_length = len(self.text_buffer)
@@ -21,7 +23,7 @@ class Textbuffer:
         # Append all necessary spaces at once to avoid repeated string concatenation
         if remaining_spaces > 0:
             self.text_buffer += " " * remaining_spaces
-        
+            self.text_buffer_with_spaces+=remaining_spaces
         # Calculate the menu_buffer only once
         self.menu_buffer_size = len(self.text_buffer)
         self.menu_buffer = list(range(self.menu_buffer_size))
@@ -73,7 +75,7 @@ class Textbuffer:
             if text=="nav_b":
                 if len(self.text_buffer.strip())==self.display_buffer[-self.cols] and len(self.text_buffer.strip())>=self.rows*self.cols:
                     self.display_buffer_position-=self.cols
-                print("\n",self.text_buffer,"\n", self.text_buffer.strip(),"\n", self.menu_buffer_cursor,"\n", self.display_buffer_position,"\n", self.display_buffer)
+                # print("\n",self.text_buffer,"\n", self.text_buffer.strip(),"\n", self.menu_buffer_cursor,"\n", self.display_buffer_position,"\n", self.display_buffer)
                 self.text_buffer = self.text_buffer[:self.menu_buffer_cursor] + self.text_buffer[self.menu_buffer_cursor+1:]
 
         else:
