@@ -49,7 +49,7 @@ class Textbuffer:
         return new_rows_list
 
     def update_buffer(self, text):
-        print(self.text_buffer_with_spaces, "#", self.menu_buffer_cursor, self.text_buffer, self.menu_buffer, self.display_buffer, "\n")
+        # print(self.text_buffer_with_spaces, "#", self.menu_buffer_cursor, self.text_buffer, self.menu_buffer, self.display_buffer, "\n")
         if text=="nav_d" or text =="nav_r":
             if text=="nav_d":
                 self.menu_buffer_cursor+=self.cols
