@@ -21,13 +21,17 @@ tbf.refresh()
 typer=Typer(keypad=keyin, keypad_map=keymap)
 while True:
     x=typer.start_typing()
-    if x=="=":
-        res=str(eval(txt.text_buffer))
+    # print(txt.text_buffer, len(txt.text_buffer))
+    if x=="=" and txt.text_buffer[0]!="𖤓":
+        res=str(eval(txt.text_buffer[:txt.menu_buffer_cursor]))
         txt.all_clear()
         txt.update_buffer(res)
-    else:
+    elif x!="=":
         txt.update_buffer(x)
-    if txt.text_buffer=="𖤓":
+    if txt.text_buffer[0]=="𖤓":
         display.clear_display()
+        txt.all_clear()
+        # txt.update_buffer(res)
     tbf.refresh()
+    # print(txt.text_buffer, txt.menu_buffer_cursor)
     time.sleep(0.1)
