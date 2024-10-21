@@ -25,6 +25,7 @@ while True:
     if x=="=" and txt.text_buffer[0]!="𖤓":
         res=str(eval(txt.text_buffer[:txt.menu_buffer_cursor]))
         txt.all_clear()
+        display.clear_display()
         txt.update_buffer(res)
     elif x!="=":
         txt.update_buffer(x)
