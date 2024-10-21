@@ -1,7 +1,7 @@
 class Textbuffer:
-    def __init__(self, text_buffer=" ", rows=8, cols=20):
-        if text_buffer != " ":
-            text_buffer+=" "
+    def __init__(self, text_buffer="𖤓", rows=7, cols=21):
+        if text_buffer != "𖤓":
+            text_buffer+="𖤓"
         self.text_buffer=text_buffer
         self.menu_buffer_size=len(self.text_buffer)
         self.menu_buffer=list(range(self.menu_buffer_size))
@@ -50,8 +50,8 @@ class Textbuffer:
         for i in range(self.rows):      
             rownew=self.text_buffer[self.display_buffer[self.cols*i]:self.display_buffer[self.cols*i+self.cols-1]+1]
             new_rows_list.append(rownew)
-        buff_index=self.display_buffer.index(self.menu_buffer_cursor)
-        new_rows_list[buff_index//self.cols]=new_rows_list[buff_index//self.cols][0:buff_index%self.cols]+"|"+new_rows_list[buff_index//self.cols][buff_index%self.cols:self.cols]
+        # buff_index=self.display_buffer.index(self.menu_buffer_cursor)
+        # new_rows_list[buff_index//self.cols]=new_rows_list[buff_index//self.cols][0:buff_index%self.cols]+"|"+new_rows_list[buff_index//self.cols][buff_index%self.cols:self.cols]
         return new_rows_list
 
     def update_buffer(self, text):
@@ -124,13 +124,14 @@ class Textbuffer:
             if self.menu_buffer_cursor>self.display_buffer[-1]:
                 self.display_buffer_position=self.menu_buffer_cursor-self.menu_buffer_cursor%self.cols-((self.rows-1)*self.cols)
                 self.refresh_area=(0,self.rows*self.cols)
-        self.text_buffer=self.text_buffer[0:self.text_buffer_nospace]+" "
+        # self.text_buffer=self.text_buffer[0:self.text_buffer_nospace]+" "
+        self.text_buffer=self.text_buffer[0:self.text_buffer_nospace]+"𖤓"
         # print(self.refresh_area)
     
     def all_clear(self):
         """Reset the buffer and cursor positions."""
         self.refresh_area=(0,self.rows*self.cols)
-        self.text_buffer = " "
+        self.text_buffer = "𖤓"
         self.text_buffer_nospace = 0
         self.menu_buffer_size = 1
         self.menu_buffer = list(range(self.menu_buffer_size))
@@ -140,3 +141,6 @@ class Textbuffer:
 
     def ref_ar(self):
         return self.refresh_area
+    
+    def cursor(self):
+        return self.menu_buffer_cursor-self.display_buffer_position
