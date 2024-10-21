@@ -1,5 +1,7 @@
 class Textbuffer:
     def __init__(self, text_buffer=" ", rows=8, cols=20):
+        if text_buffer != " ":
+            text_buffer+=" "
         self.text_buffer=text_buffer
         self.menu_buffer_size=len(self.text_buffer)
         self.menu_buffer=list(range(self.menu_buffer_size))
@@ -13,8 +15,9 @@ class Textbuffer:
         self.text_buffer_with_spaces=self.menu_buffer_size
         self.extra_spaces=0
         self.text_buffer_nospace=0
+        self.refresh_area=(0,self.rows*self.cols)
         self.buffer()
-        self.update_buffer("")
+        self.update_buffer("")               
     
     def buffer(self):
         
@@ -30,7 +33,6 @@ class Textbuffer:
         # Calculate the menu_buffer only once
         self.menu_buffer_size = self.buffer_length + remaining_spaces
         # self.menu_buffer = list(range(self.menu_buffer_size))
-        
         # Ensure text_buffer has enough characters to fill display buffer
         total_buffer_size = self.rows * self.cols
         if self.menu_buffer_size < total_buffer_size:
@@ -45,8 +47,7 @@ class Textbuffer:
         self.display_buffer = self.menu_buffer[self.display_buffer_position:self.display_buffer_position + total_buffer_size]
         new_rows_list=[]
 
-        for i in range(self.rows):
-      
+        for i in range(self.rows):      
             rownew=self.text_buffer[self.display_buffer[self.cols*i]:self.display_buffer[self.cols*i+self.cols-1]+1]
             new_rows_list.append(rownew)
         buff_index=self.display_buffer.index(self.menu_buffer_cursor)
@@ -54,24 +55,43 @@ class Textbuffer:
         return new_rows_list
 
     def update_buffer(self, text):
+        self.refresh_area=(0,self.rows*self.cols)
+        past_buffer_cursor=self.menu_buffer_cursor
         txt_buf_size=self.menu_buffer[-1]+1
         if text=="nav_d" or text =="nav_r":
             if text=="nav_d":
                 self.menu_buffer_cursor+=self.cols
             else:
                 self.menu_buffer_cursor+=1
+            # self.refresh_area=((self.menu_buffer_cursor-self.display_buffer_position)%self.cols + ((self.menu_buffer_cursor-self.display_buffer_position)//self.cols)*self.cols, ((self.menu_buffer_cursor-self.display_buffer_position)//self.cols)*self.cols +self.cols)
+            self.refresh_area=((past_buffer_cursor-self.display_buffer_position)%self.cols + ((past_buffer_cursor-self.display_buffer_position)//self.cols)*self.cols, ((self.menu_buffer_cursor-self.display_buffer_position)//self.cols)*self.cols +self.cols)
+            
             if self.menu_buffer_cursor >= self.buffer_length:
                 self.menu_buffer_cursor=0
                 self.display_buffer_position=0
+                self.refresh_area=(0,self.rows*self.cols)
             elif self.menu_buffer_cursor > self.display_buffer[-1]:
                 self.display_buffer_position+=self.cols
+                self.refresh_area=(0,self.rows*self.cols)
         elif text=="nav_u" or text=="nav_l" or text=="nav_b":
+            # print("t_b",(self.menu_buffer_cursor-self.display_buffer_position)%self.cols, ((past_buffer_cursor-self.display_buffer_position)//self.cols))
             going_bottom=False
+            
             if text=="nav_u":
                 self.menu_buffer_cursor-=self.cols
             else:
                 self.menu_buffer_cursor-=1
+            # print("t_b",(self.menu_buffer_cursor-self.display_buffer_position)%self.cols, ((past_buffer_cursor-self.display_buffer_position)//self.cols))
+            # self.refresh_area=((self.menu_buffer_cursor-self.display_buffer_position)%self.cols + ((self.menu_buffer_cursor-self.display_buffer_position)//self.cols)*self.cols, ((self.menu_buffer_cursor-self.display_buffer_position)//self.cols)*self.cols +self.cols)
+            # self.refresh_area=((self.menu_buffer_cursor-self.display_buffer_position)%self.cols + ((self.menu_buffer_cursor-self.display_buffer_position)//self.cols)*self.cols, (self.menu_buffer_cursor-self.display_buffer_position)%self.cols + ((self.menu_buffer_cursor-self.display_buffer_position)//self.cols)*self.cols+self.cols)
+            # print(self.refresh_area, "from text_buffer.py")
+            if text=="nav_b" :
+                self.refresh_area=((self.menu_buffer_cursor-self.display_buffer_position)%self.cols + ((self.menu_buffer_cursor-self.display_buffer_position)//self.cols)*self.cols, self.rows*self.cols)
+            else:
+                self.refresh_area=((self.menu_buffer_cursor-self.display_buffer_position)%self.cols + ((self.menu_buffer_cursor-self.display_buffer_position)//self.cols)*self.cols, ((past_buffer_cursor-self.display_buffer_position)//self.cols)*self.cols +self.cols)
+            
             if self.menu_buffer_cursor < 0:
+                self.refresh_area=(0,self.rows*self.cols)
                 going_bottom=True
                 if txt_buf_size<=self.rows*self.cols:
                     self.menu_buffer_cursor=self.buffer_length-1
@@ -79,10 +99,12 @@ class Textbuffer:
                     self.menu_buffer_cursor=txt_buf_size-self.no_last_spaces-1
                 self.display_buffer_position=txt_buf_size-self.rows*self.cols
             elif self.menu_buffer_cursor < self.display_buffer[0]:
+                self.refresh_area=(0,self.rows*self.cols)
                 self.display_buffer_position-=self.cols
             if text=="nav_b" :
                 if (txt_buf_size-self.no_last_spaces-self.extra_spaces-1)==self.display_buffer[-self.cols] and (txt_buf_size-self.no_last_spaces-self.extra_spaces-1)>=self.rows*self.cols:
                     self.display_buffer_position-=self.cols
+                    self.refresh_area=(0,self.rows*self.cols)
                 self.text_buffer = self.text_buffer[:self.menu_buffer_cursor] + self.text_buffer[self.menu_buffer_cursor+1:]
                 if going_bottom==False:
                     self.text_buffer_nospace-=1
@@ -91,17 +113,23 @@ class Textbuffer:
         elif text =="AC":
             self.all_clear()
         else:
+            past_buffer_cursor=self.menu_buffer_cursor
             self.text_buffer=self.text_buffer[0:self.menu_buffer_cursor]+text+self.text_buffer[self.menu_buffer_cursor:txt_buf_size]
             self.text_buffer_nospace+=len(text)
             self.menu_buffer_size+=len(text)
             self.menu_buffer=list(range(self.menu_buffer_size))
             self.menu_buffer_cursor+=len(text)
+            self.refresh_area=((past_buffer_cursor-self.display_buffer_position)%self.cols + ((past_buffer_cursor-self.display_buffer_position)//self.cols)*self.cols, self.rows*self.cols)
+            
             if self.menu_buffer_cursor>self.display_buffer[-1]:
                 self.display_buffer_position=self.menu_buffer_cursor-self.menu_buffer_cursor%self.cols-((self.rows-1)*self.cols)
+                self.refresh_area=(0,self.rows*self.cols)
         self.text_buffer=self.text_buffer[0:self.text_buffer_nospace]+" "
-
+        # print(self.refresh_area)
+    
     def all_clear(self):
         """Reset the buffer and cursor positions."""
+        self.refresh_area=(0,self.rows*self.cols)
         self.text_buffer = " "
         self.text_buffer_nospace = 0
         self.menu_buffer_size = 1
@@ -109,3 +137,6 @@ class Textbuffer:
         self.menu_buffer_cursor = 0
         self.display_buffer_position = 0
         self.no_last_spaces = 0                            
+
+    def ref_ar(self):
+        return self.refresh_area
