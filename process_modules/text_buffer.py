@@ -84,7 +84,6 @@ class Textbuffer:
                 if (txt_buf_size-self.no_last_spaces-self.extra_spaces-1)==self.display_buffer[-self.cols] and (txt_buf_size-self.no_last_spaces-self.extra_spaces-1)>=self.rows*self.cols:
                     self.display_buffer_position-=self.cols
                 self.text_buffer = self.text_buffer[:self.menu_buffer_cursor] + self.text_buffer[self.menu_buffer_cursor+1:]
-                # if len(self.)>0:
                 if going_bottom==False:
                     self.text_buffer_nospace-=1
                     if self.text_buffer_nospace<0:
@@ -99,10 +98,7 @@ class Textbuffer:
             self.menu_buffer_cursor+=len(text)
             if self.menu_buffer_cursor>self.display_buffer[-1]:
                 self.display_buffer_position=self.menu_buffer_cursor-self.menu_buffer_cursor%self.cols-((self.rows-1)*self.cols)
-        # print(len(self.text_buffer.rstrip()), self.text_buffer_nospace)
-        # self.text_buffer=self.text_buffer.rstrip()+" "
         self.text_buffer=self.text_buffer[0:self.text_buffer_nospace]+" "
-        # self.text_buffer=self.text_buffer[0:self.buffer_length-1]+" "
 
     def all_clear(self):
         """Reset the buffer and cursor positions."""
