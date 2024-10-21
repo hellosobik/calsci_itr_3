@@ -13,7 +13,6 @@ keymap=Keypad_5X8()
 keyin=Keypad(rows=[4, 5, 13, 14, 15, 16, 17, 18], cols=[19, 21, 22, 23, 25])
 display=Display(cs1=2, rs=32, rst=33, sda=27, sck=26)
 txt=Textbuffer()
-# txt.buffer()
 tbf=Tbf(disp_out=display, chrs=chtrs, t_b=txt)
 tbf.refresh()
 typer=Typer(keypad=keyin, keypad_map=keymap)
@@ -23,7 +22,6 @@ while True:
         res=str(eval(txt.text_buffer))
         txt.all_clear()
         txt.update_buffer(res)
-        # tbf.refresh()
     else:
         txt.update_buffer(x)
     if txt.text_buffer==" ":
