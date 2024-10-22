@@ -125,7 +125,7 @@ class Textbuffer:
                 self.display_buffer_position=self.menu_buffer_cursor-self.menu_buffer_cursor%self.cols-((self.rows-1)*self.cols)
                 self.refresh_area=(0,self.rows*self.cols)
         # self.text_buffer=self.text_buffer[0:self.text_buffer_nospace]+" "
-        self.text_buffer=self.text_buffer[0:self.text_buffer_nospace]+"𖤓"
+        self.text_buffer=self.text_buffer[0:self. text_buffer_nospace]+"𖤓"
         # print(self.refresh_area)
     
     def all_clear(self):
