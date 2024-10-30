@@ -73,7 +73,7 @@ while True:
             refresh_rows=(menu_cursor-1-menu_display_position,menu_cursor-menu_display_position)
         # display_buffer=menu_list[menu_display_position:menu_display_position+menu_display_size]
         # display_cursor=menu_cursor-menu_display_position
-    if inp=="u":
+    elif inp=="u":
         menu_cursor-=1
         if menu_cursor<0:
             menu_cursor=len(menu_list)-1
@@ -85,8 +85,11 @@ while True:
             refresh_rows=(0,rows)
         else:
             refresh_rows=(menu_cursor-menu_display_position,menu_cursor-menu_display_position+1)
+    elif inp=="e":
+        menu_list_functions[menu_cursor]()
     display_buffer=menu_list[menu_display_position:menu_display_position+menu_display_size]
     display_cursor=menu_cursor-menu_display_position
+    # menu_list_functions[menu_cursor]()
     # print(refresh_rows)
     # print(display_buffer)
     # print(display_cursor)
