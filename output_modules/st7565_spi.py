@@ -27,7 +27,7 @@ class Display:
         self.write_instruction(0x2F)  # Power control: Booster, Regulator, Follower on
         self.write_instruction(0x27)  # Set contrast (0x27 can be adjusted)
         self.write_instruction(0x81)  # Set contrast
-        self.write_instruction(0x0A)  # Contrast level (set to 0x16 here)
+        self.write_instruction(0x00)  # Contrast level (set to 0x16 here)
         self.write_instruction(0xAF)  # Display ON
         # clear_display()
 
