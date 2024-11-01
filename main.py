@@ -1,3 +1,4 @@
 from application_modules.calculate import calculate
-
-calculate()
+from application_modules.home import home
+# calculate()
+home()

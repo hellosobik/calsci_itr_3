@@ -1,7 +1,7 @@
 class Keypad_5X8:
     keypad_5X8_layout=[
         ["", "", "nav_u", "", ""],
-        ["", "nav_l", "", "nav_r", "x"],
+        ["back", "nav_l", "ok", "nav_r", "x"],
         ["", "", "nav_d", "(", ")"],
         ["pow(", "sin(", "cos(", "tan(", "log("],
         ["7", "8", "9", "nav_b", "AC"],
